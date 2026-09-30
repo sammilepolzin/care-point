@@ -45,7 +45,7 @@ export const ReportSearchPage: React.FC = () => {
   const [previewReport, setPreviewReport] = useState<MedicalReport | null>(null);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
     if (timerSeconds > 0) {
       interval = setInterval(() => {
         setTimerSeconds((prev) => prev - 1);
