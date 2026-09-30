@@ -77,7 +77,7 @@ export class SerialBookingService {
 
     // SMS & WhatsApp Notification Trigger Logic
     console.log(`\n📲 [DISPATCH NOTIFICATION] SMS & WhatsApp sent to ${appointment.patientPhone}:`);
-    console.log(`   "Dear ${appointment.patientName}, your appointment with ${appointment.doctor?.name} is CONFIRMED. Serial No: ${appointment.formattedSerial}, Date: ${appointment.appointmentDate}, Time: ${appointment.sessionTime}. Care Point Diagnostic."\n`);
+    console.log(`   "Dear ${appointment.patientName}, your appointment with ${(appointment.doctor as unknown as { name: string }).name} is CONFIRMED. Serial No: ${appointment.formattedSerial}, Date: ${appointment.appointmentDate}, Time: ${appointment.sessionTime}. Care Point Diagnostic."\n`);
 
     return appointment;
   }
