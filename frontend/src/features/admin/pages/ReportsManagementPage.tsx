@@ -173,7 +173,7 @@ export const ReportsManagementPage: React.FC = () => {
   };
 
   const getStreamUrl = (reportId: string) => {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://care-point-y06f.onrender.com/api/v1';
     return `${baseUrl}/reports/view/${reportId}`;
   };
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://care-point-y06f.onrender.com/api/v1',
   withCredentials: true,
 });
 
@@ -33,7 +33,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const refreshResponse = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1'}/auth/refresh-token`,
+          `${import.meta.env.VITE_API_BASE_URL || 'https://care-point-y06f.onrender.com/api/v1'}/auth/refresh-token`,
           {},
           { withCredentials: true }
         );
