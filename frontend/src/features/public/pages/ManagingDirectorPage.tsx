@@ -1,0 +1,85 @@
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Award, Quote, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import api from '@/lib/axios';
+
+export const ManagingDirectorPage: React.FC = () => {
+  const { data: settings } = useQuery({
+    queryKey: ['public-settings'],
+    queryFn: async () => {
+      const res = await api.get('/settings');
+      return res.data.data;
+    },
+  });
+
+  const md = settings?.managingDirectorMessage;
+
+  return (
+    <div className="min-h-screen bg-[#f8fafc] py-8 sm:py-12 pb-24 space-y-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        {/* Banner */}
+        <div className="bg-brand-gradient rounded-3xl p-6 sm:p-12 text-white shadow-lg text-center relative overflow-hidden">
+          <span className="text-[10px] font-black uppercase tracking-widest bg-white/20 px-3.5 py-1 rounded-full inline-flex items-center gap-1.5">
+            <Award className="w-3.5 h-3.5 text-amber-300" /> Executive Message
+          </span>
+          <h1 className="text-2xl sm:text-4xl font-black mt-2">Managing Director's Statement</h1>
+          <p className="text-emerald-100 text-xs sm:text-sm mt-2 max-w-xl mx-auto">
+            Transforming patient experience through technology, automation, and certified doorstep medical services.
+          </p>
+        </div>
+
+        {/* Message Card */}
+        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm flex flex-col md:flex-row gap-8 items-center md:items-start">
+          <div className="shrink-0 text-center space-y-3">
+            <img
+              src={md?.photoUrl || 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=600&auto=format&fit=crop'}
+              alt={md?.name}
+              className="w-48 h-56 sm:w-56 sm:h-64 rounded-3xl object-cover border-4 border-white shadow-xl ring-2 ring-emerald-300 mx-auto"
+            />
+            <div>
+              <h3 className="font-black text-slate-900 text-base">{md?.name}</h3>
+              <p className="text-xs text-[#00984a] font-bold mt-0.5">{md?.designation}</p>
+              <p className="text-[11px] text-slate-500 max-w-xs mx-auto">{md?.degrees}</p>
+            </div>
+          </div>
+
+          <div className="space-y-5 flex-1 text-slate-700">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#00984a] flex items-center justify-center font-bold">
+              <Quote className="w-6 h-6" />
+            </div>
+
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
+              "Modern healthcare must be accessible, transparent, and seamless for every citizen."
+            </h2>
+
+            <div className="text-sm text-slate-600 leading-relaxed space-y-4 font-medium">
+              <p>{md?.statement}</p>
+              <p>
+                We have introduced real-time chamber queues, instant mobile OTP report delivery, and doorstep blood sample collection to ensure patients never have to waste hours in long lines.
+              </p>
+              <p>
+                Our digital infrastructure is engineered to protect patient privacy while providing clinicians with rapid, standardized digital reports.
+              </p>
+            </div>
+
+            <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+              <div>
+                <p className="font-black text-slate-900 text-sm">{md?.name}</p>
+                <p className="text-xs text-slate-400">Managing Director & CEO, Care Point</p>
+              </div>
+              <Link
+                to="/tests"
+                className="bg-brand-gradient hover:opacity-95 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-1 shadow-xs"
+              >
+                <span>Book a Test</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
