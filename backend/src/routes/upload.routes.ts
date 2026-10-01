@@ -19,7 +19,7 @@ router.post(
       throw new AppError('Please select a valid image file from your computer to upload.', 400);
     }
 
-    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/images/${file.filename}`;
+    const imageUrl = `https://${req.get('host')}/uploads/images/${file.filename}`;
 
     console.log(`\n📸 [SERVER IMAGE UPLOAD OK] Stored: ${file.filename} -> URL: ${imageUrl}\n`);
 
@@ -45,7 +45,7 @@ router.post(
     if (!file) {
       throw new AppError('Please select an image file.', 400);
     }
-    const imageUrl = `${req.protocol}://${req.get('host')}/uploads/images/${file.filename}`;
+    const imageUrl = `https://${req.get('host')}/uploads/images/${file.filename}`;
     sendResponse({
       res,
       statusCode: 200,
