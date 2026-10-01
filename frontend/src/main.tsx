@@ -73,6 +73,8 @@ const Startup: React.FC = () => {
       const data = await response.json();
 
       if (data?.success && data?.data?.status === 'UP') {
+        const loader = document.getElementById('startup-loader');
+        if (loader) loader.remove();
         setReady(true);
       } else {
         throw new Error('Backend is not ready');
