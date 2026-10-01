@@ -56,13 +56,9 @@ const Startup: React.FC = () => {
     setError(false);
     setReady(false);
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
-
     try {
       const response = await fetch(`${API_BASE_URL}/health`, {
         method: 'GET',
-        signal: controller.signal,
         cache: 'no-store',
       });
 
@@ -81,8 +77,6 @@ const Startup: React.FC = () => {
       }
     } catch {
       setError(true);
-    } finally {
-      clearTimeout(timeout);
     }
   };
 
