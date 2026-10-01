@@ -2,11 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Static favicon loaded directly by Vercel -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Browser title shown while the application is starting -->
     <title>Care Point</title>
 
     <style>
+      /*
+       * ============================================================
+       * CARE POINT INITIAL STARTUP LOADER
+       * ============================================================
+       *
+       * This loader is pure HTML/CSS.
+       *
+       * It appears immediately when Vercel serves index.html,
+       * before React starts and before App.tsx is loaded.
+       *
+       * IMPORTANT:
+       * Do NOT remove this loader if you want to prevent users
+       * from seeing the application before the backend is ready.
+       */
+
       html,
       body {
         margin: 0;
@@ -16,16 +36,27 @@
         background: #ffffff;
       }
 
+      /*
+       * Full-screen startup overlay.
+       * z-index keeps it above everything else.
+       */
       #startup-loader {
         position: fixed;
         inset: 0;
-        z-index: 99999;
+        z-index: 999999;
         display: flex;
         align-items: center;
         justify-content: center;
         background: #ffffff;
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", Roboto, sans-serif;
+
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
       }
 
       .startup-content {
@@ -33,19 +64,32 @@
         padding: 24px;
       }
 
+      /*
+       * Care Point temporary logo.
+       * This appears instantly without waiting for API data.
+       */
       .startup-logo {
         width: 80px;
         height: 80px;
         margin: 0 auto 20px;
         border-radius: 20px;
-        background: linear-gradient(135deg, #006642 0%, #00984a 100%);
+
+        background: linear-gradient(
+          135deg,
+          #006642 0%,
+          #00984a 100%
+        );
+
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+
+        color: #ffffff;
         font-size: 28px;
         font-weight: 900;
-        box-shadow: 0 10px 30px rgba(0, 102, 66, 0.18);
+
+        box-shadow:
+          0 10px 30px rgba(0, 102, 66, 0.18);
       }
 
       .startup-title {
@@ -61,13 +105,18 @@
         font-size: 14px;
       }
 
+      /*
+       * Loading spinner.
+       */
       .startup-spinner {
         width: 30px;
         height: 30px;
         margin: 20px auto 0;
+
         border: 4px solid #e2e8f0;
         border-top-color: #00984a;
         border-radius: 50%;
+
         animation: startup-spin 0.8s linear infinite;
       }
 
@@ -80,17 +129,53 @@
   </head>
 
   <body>
+    <!--
+      ============================================================
+      INITIAL LOADER
+      ============================================================
+
+      This is the ONLY visible UI before React starts.
+
+      The loader will remain visible until main.tsx confirms
+      that the backend API is responding with status = UP.
+    -->
     <div id="startup-loader">
       <div class="startup-content">
-        <div class="startup-logo">CP</div>
-        <h1 class="startup-title">Care Point</h1>
-        <p class="startup-text">Starting Care Point...</p>
+
+        <!-- Temporary Care Point logo -->
+        <div class="startup-logo">
+          CP
+        </div>
+
+        <!-- Application name -->
+        <h1 class="startup-title">
+          Care Point
+        </h1>
+
+        <!-- Backend connection status -->
+        <p class="startup-text">
+          Connecting to Care Point server...
+        </p>
+
+        <!-- Loading animation -->
         <div class="startup-spinner"></div>
+
       </div>
     </div>
 
+    <!--
+      ============================================================
+      REACT ROOT
+      ============================================================
+
+      React will mount here ONLY after the backend is ready.
+    -->
     <div id="root"></div>
 
+    <!--
+      React entry point.
+      main.tsx performs the backend health check first.
+    -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
