@@ -127,9 +127,7 @@ export const DoctorsManagementPage: React.FC = () => {
     setError(null);
 
     try {
-      const res = await api.post('/upload/doctor-image', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const res = await api.post('/upload/doctor-image', formData);
       if (res.data.success) {
         setPhotoUrl(res.data.data.imageUrl);
       }
