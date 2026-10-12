@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ======================================================== */
+/* 🌿 CARE POINT SIGNATURE BRAND COLORS & GRADIENTS         */
+/* ======================================================== */
+@layer utilities {
+  /* সিগনেচার ব্র্যান্ড গ্রেডিয়েন্ট (টপবার, হেডার ব্যানার ও বাটন) */
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, #006642 0%, #00984a 100%) !important;
+  }
+
+  /* ব্র্যান্ড ডার্ক ও প্রাইমারি গ্রিন */
+  .bg-brand-primary {
+    background-color: #00984a !important;
+  }
+
+  .bg-brand-dark {
+    background-color: #006642 !important;
+  }
+
+  .text-brand {
+    color: #00984a !important;
+  }
+
+  .border-brand {
+    border-color: #00984a !important;
+  }
+
+  /* রিপোর্ট ডাউনলোড গ্লোয়িং বাটন */
+  .report-glow-btn {
+    box-shadow: 0 0 15px rgba(0, 152, 74, 0.25);
+    transition: all 0.3s ease;
+  }
+
+  .report-glow-btn:hover {
+    box-shadow: 0 0 25px rgba(0, 152, 74, 0.45);
+  }
+
+  /* নো-স্ক্রোলবার ইউটিলিটি */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ======================================================== */
+/* 📱 GLOBAL VIEWPORT LOCK (PREVENTS HORIZONTAL OVERFLOW)   */
+/* ======================================================== */
+@layer base {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-[#f8fafc] text-slate-900 antialiased font-sans selection:bg-[#00984a] selection:text-white;
+  }
+
+  *, ::before, ::after {
+    box-sizing: border-box;
+  }
+}
+
+.medical-gradient {
+  background: radial-gradient(circle at top right, rgba(0, 152, 74, 0.08) 0%, transparent 60%),
+              radial-gradient(circle at bottom left, rgba(0, 102, 66, 0.08) 0%, transparent 60%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* ======================================================== */
+/* 🖨️ PROFESSIONAL PRINT ENGINE (OFFICIAL CLEAN SLIPS)      */
+/* ======================================================== */
+@media print {
+  header, 
+  footer, 
+  nav, 
+  aside, 
+  button, 
+  .no-print, 
+  [aria-label="Quick contact actions"], 
+  [aria-label="Diagnostic test cart"] {
+    display: none !important;
+  }
+
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px 30px !important;
+    background: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  .print-container * {
+    visibility: visible !important;
+  }
+}
