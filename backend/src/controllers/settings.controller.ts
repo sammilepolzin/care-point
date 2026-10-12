@@ -30,7 +30,8 @@ export const updateSettings = asyncHandler(async (req: Request, res: Response) =
 // 🌟 SUPER ADMIN HARD-SECURITY SELECTIVE DELETE CONTROLLER
 export const selectiveDeleteSettingsData = asyncHandler(async (req: Request, res: Response) => {
   const { moduleKey, itemIds, password, targets } = req.body;
-  const currentUserId = req.user?._id;
+
+const currentUserId = req.user?.userId || req.user?._id || req.user?.id;
 
   // 🛑 ১. শুধুমাত্র SUPER_ADMIN এর অনুমতি আছে কি না যাচাই
   if (req.user?.role !== ROLES.SUPER_ADMIN) {
