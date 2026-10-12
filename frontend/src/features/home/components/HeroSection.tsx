@@ -60,8 +60,7 @@ export const HeroSection: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
+const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const days = [
     'Saturday',
     'Sunday',

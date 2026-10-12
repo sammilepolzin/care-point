@@ -1,25 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { 
-  ShoppingBag, 
-  Trash2, 
-  Home, 
-  Building2, 
-  Calendar, 
-  Clock, 
-  User, 
-  Phone, 
-  CheckCircle2, 
-  AlertCircle, 
-  Printer, 
-  ShieldCheck, 
-  Send, 
-  Loader2, 
-  Lock, 
-  UserCheck, 
-  Check, 
-  Sparkles 
+import {
+  Home,
+  Building2,
+  Calendar,
+  User,
+  AlertCircle,
+  Printer,
+  ShieldCheck,
+  Send,
+  Loader2,
+  Lock,
+  UserCheck,
+  Check,
+  Sparkles,
 } from 'lucide-react';
 import api from '@/lib/axios';
 import { useTestCart } from '../context/TestCartContext';
@@ -49,34 +44,31 @@ const formatTimeTo12Hour = (timeStr: string): string => {
 };
 
 export const TestBookingCheckoutPage: React.FC = () => {
-  const navigate = useNavigate();
   const { user: authUser, isAuthenticated } = useAuth();
   const {
     cartItems,
-    items,
     removeFromCart,
     clearCart,
   } = useTestCart();
 
-  // 🌟 ROBUST CART ITEMS FALLBACK
-  const currentCartItems = useMemo(() => {
-    if (cartItems && cartItems.length > 0) return cartItems;
-    if (items && items.length > 0) return items;
+  // 🌟 SAFE CART ITEMS FALLBACK
+  const currentCartItems = useMemo<any[]>(() => {
+    if (Array.isArray(cartItems) && cartItems.length > 0) return cartItems;
     return [];
-  }, [cartItems, items]);
+  }, [cartItems]);
 
   const todayStr = new Date().toISOString().split('T')[0];
 
   // 🌟 100% RELIABLE LIVE SUB-TOTAL & DISCOUNT CALCULATIONS
   const calculatedDiscountTotal = useMemo(() => {
-    return currentCartItems.reduce((sum, item: any) => {
+    return currentCartItems.reduce<number>((sum: number, item: any) => {
       const price = Number(item.discountPrice) || Number(item.regularPrice) || Number(item.price) || 0;
       return sum + price;
     }, 0);
   }, [currentCartItems]);
 
   const calculatedRegularTotal = useMemo(() => {
-    return currentCartItems.reduce((sum, item: any) => {
+    return currentCartItems.reduce<number>((sum: number, item: any) => {
       const regular = Number(item.regularPrice) || Number(item.discountPrice) || Number(item.price) || 0;
       return sum + regular;
     }, 0);

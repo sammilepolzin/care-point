@@ -8,12 +8,9 @@ import {
   HeartPulse, 
   Download, 
   Eye, 
-  Clock, 
-  MapPin, 
   User, 
   Phone, 
   Mail, 
-  ShieldCheck, 
   Droplet, 
   Activity, 
   Edit3, 
@@ -67,15 +64,16 @@ export const PatientDashboardPage: React.FC = () => {
   useEffect(() => {
     if (profileDetails?.patient || user) {
       const p = profileDetails?.patient;
-      setEditName(p?.name || user?.name || '');
-      setEditPhone(user?.phone || p?.phone || '');
-      setEditEmail(user?.email || p?.email || '');
+      const safeUser = user as any;
+      setEditName(p?.name || safeUser?.name || '');
+      setEditPhone(safeUser?.phone || p?.phone || '');
+      setEditEmail(safeUser?.email || p?.email || '');
       setEditBloodGroup(p?.bloodGroup || 'B+');
       setEditAge(p?.age || 28);
       setEditGender(p?.gender || 'MALE');
       setEditAddress(p?.address || 'Dhaka, Bangladesh');
       setEditEmergencyPhone(p?.emergencyContact || '');
-      setEditPhotoUrl(p?.photoUrl || user?.avatarUrl || '');
+      setEditPhotoUrl(p?.photoUrl || safeUser?.avatarUrl || safeUser?.photoUrl || '');
     }
   }, [profileDetails, user]);
 
@@ -187,8 +185,9 @@ export const PatientDashboardPage: React.FC = () => {
   };
 
   const patient = profileDetails?.patient;
-  const currentPhoto = patient?.photoUrl || user?.avatarUrl;
-  const patientDisplayId = patient?.patientId || `PAT-${new Date().getFullYear()}-${user?.phone?.slice(-4) || '8942'}`;
+  const safeUser = user as any;
+  const currentPhoto = patient?.photoUrl || safeUser?.avatarUrl || safeUser?.photoUrl;
+  const patientDisplayId = patient?.patientId || `PAT-${new Date().getFullYear()}-${user?.phone?.slice(-4) || safeUser?.phone?.slice(-4) || '8942'}`;
 
   return (
     <div className="space-y-6 sm:space-y-8 w-full pb-10">
