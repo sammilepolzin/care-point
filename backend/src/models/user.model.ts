@@ -1,13 +1,15 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { ROLES, Role } from '../constants/roles';
+import { ROLES, UserRole } from '../constants/roles';
 
 export interface IUser extends Document {
   name: string;
   email: string;
   phone: string;
   password?: string;
-  role: Role;
+  refreshToken?: string;
+  lastLoginAt?: Date;
+  role: UserRole;
   permissions: string[];
   isActive: boolean;
   avatarUrl?: string;
@@ -22,6 +24,8 @@ const userSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     phone: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true, select: false },
+    refreshToken: { type: String, select: false },
+    lastLoginAt: { type: Date },
     role: {
       type: String,
       enum: Object.values(ROLES),

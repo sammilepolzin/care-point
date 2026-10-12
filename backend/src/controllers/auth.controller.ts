@@ -142,6 +142,7 @@ export class AuthController {
   // ৮. প্রোফাইল আপডেট
   public static updateProfile = asyncHandler(async (req: Request, res: Response) => {
     const uid = req.user?.userId || req.user?._id;
+    if (!uid) throw new AppError('Unauthorized access.', 401);
     const result = await AuthService.updatePatientProfile(uid, req.body);
     sendResponse({
       res,
@@ -154,6 +155,7 @@ export class AuthController {
   // ৯. প্রোফাইল বিস্তারিত
   public static getProfileDetails = asyncHandler(async (req: Request, res: Response) => {
     const uid = req.user?.userId || req.user?._id;
+    if (!uid) throw new AppError('Unauthorized access.', 401);
     const result = await AuthService.getPatientDetails(uid);
     sendResponse({
       res,

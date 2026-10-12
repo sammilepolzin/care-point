@@ -4,6 +4,8 @@ import { UserRole } from '../constants/roles';
 
 export interface TokenPayload {
   userId: string;
+  _id?: string;
+  id?: string;
   email: string;
   role: UserRole;
 }
