@@ -1,43 +1,76 @@
-import { Router, Request, Response } from 'express';
+
+import { Router, Request, Response, NextFunction } from 'express';
+import ImageKit from 'imagekit';
+import path from 'path';
+import { randomUUID } from 'crypto';
 import { uploadUniversalImage } from '../middleware/upload.middleware';
 import { authenticate } from '../middleware/auth.middleware';
 import { sendResponse } from '../utils/apiResponse';
 import { AppError } from '../errors/AppError';
-import { env } from '../config/env';
 
 const router = Router();
 
-const processUpload = (req: Request, res: Response) => {
-  // ফাইল অবজেক্ট ধরা
-  const file = req.file || (req.files && Array.isArray(req.files) ? req.files[0] : undefined);
-  
-  if (!file) {
-    throw new AppError('No image file provided. Please select a valid file.', 400);
+const cloudName = process.env.IMAGEKIT_URL_ENDPOINT;
+const publicKey = process.env.IMAGEKIT_PUBLIC_KEY;
+const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
+
+const imagekit =
+  cloudName && publicKey && privateKey
+    ? new ImageKit({
+        publicKey,
+        privateKey,
+        urlEndpoint: cloudName,
+      })
+    : null;
+
+const processUpload = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const file =
+      req.file ||
+      (req.files && Array.isArray(req.files) ? req.files[0] : undefined);
+
+    if (!file) {
+      throw new AppError('No image file provided.', 400);
+    }
+
+    if (!imagekit) {
+      throw new AppError('ImageKit is not configured on the server.', 500);
+    }
+
+    if (!file.buffer) {
+      throw new AppError('Image file buffer is missing.', 400);
+    }
+
+    const ext = path.extname(file.originalname).toLowerCase();
+    const filename = `img-${Date.now()}-${randomUUID()}${ext}`;
+
+    const uploaded = await imagekit.upload({
+      file: file.buffer,
+      fileName: filename,
+      folder: '/care-point/images',
+      useUniqueFileName: false,
+    });
+
+    console.log(`[IMAGEKIT UPLOAD SUCCESS]: ${uploaded.url}`);
+
+    sendResponse({
+      res,
+      statusCode: 200,
+      message: 'Image uploaded successfully.',
+      data: {
+        filename: uploaded.name,
+        imageUrl: uploaded.url,
+      },
+    });
+  } catch (error) {
+    next(error);
   }
-
-  // 🚨 100% BULLETPROOF PORT FIX: 
-  // ডেভেলপমেন্ট মোডে সবসময় ব্যাকএন্ডের আসল পোর্ট (5000) ব্যবহার করবে, যাতে ফ্রন্টএন্ডের 3000 পোর্টের সাথে কনফ্লিক্ট না হয়।
-  const serverUrl = env.NODE_ENV === 'production' 
-    ? `${req.protocol}://${req.get('host')}` 
-    : `http://localhost:${env.PORT || 5000}`;
-
-  // চূড়ান্ত ইমেজ ইউআরএল
-  const imageUrl = `${serverUrl}/uploads/images/${file.filename}`;
-
-  console.log(`\n📸 [IMAGE SUCCESSFULLY SAVED & LINKED]: ${imageUrl}\n`);
-
-  sendResponse({
-    res,
-    statusCode: 200,
-    message: 'Image uploaded successfully.',
-    data: { 
-      filename: file.filename, 
-      imageUrl 
-    },
-  });
 };
 
-// রাউটসমূহ
 router.post('/image', authenticate, uploadUniversalImage.any(), processUpload);
 router.post('/doctor-image', authenticate, uploadUniversalImage.any(), processUpload);
 
