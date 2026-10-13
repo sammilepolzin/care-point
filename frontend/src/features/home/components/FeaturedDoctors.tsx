@@ -253,7 +253,7 @@ export const FeaturedDoctors: React.FC = () => {
         {/* View All Button */}
         <div className="mt-8 sm:mt-10 text-center">
           <Link
-            to="/doctors"
+            to="/today-doctors"
             className="inline-flex items-center gap-2 bg-white hover:bg-[#f0fdf4] text-[#00984a] border-2 border-[#00984a] font-black text-xs sm:text-sm px-7 sm:px-8 py-3 sm:py-3.5 rounded-2xl shadow-xs transition active:scale-95 cursor-pointer"
           >
             <span>View All Specialist Doctors (সকল ডাক্তার দেখুন)</span>
